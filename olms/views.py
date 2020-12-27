@@ -167,6 +167,13 @@ def newLeave(response):
         messages.error(
             response, 'Maximum number of  leaves per month reached')
         return redirect('home')
+    if Leaves.objects.get(user=response.user.profile, status__in=['pending', 'ct_granted', 'granted']):
+        messages.error(response, 'Cannot apply for a new leave when there is a leave pending or CT granted or granted')
+        return redirect('home')
+    if Outings.objects.get(user=response.user.profile, status__in=['pending', 'ct_granted', 'granted']):
+        messages.error(response, 'Cannot apply for a new leave when there is an outing pending or CT granted or granted')
+        return redirect('home')
+    
     form = forms.newLeave()
     if response.method == 'POST':
         form = forms.newLeave(response.POST,  response.FILES)
@@ -200,7 +207,7 @@ def admin_home(response):
         return redirect('logout')
     if usertype(response) != 'admin':
         return redirect('home')
-    g = 'cgranted'
+    g = 'ct_granted'
     try:
         g = response.GET['featured']
     except:
@@ -208,7 +215,7 @@ def admin_home(response):
     if g == 'on leave':
         g = 'on_leave'
     elif g == 'pending':
-        g = 'cgranted'
+        g = 'ct_granted'
     leaves = Leaves.objects.filter(
         user__year=response.user.profile.year, status=g).order_by('-is_emergency', '-id')
     # if g == 'delayed':
@@ -220,7 +227,9 @@ def admin_home(response):
         ppnb.append(p.Parent_phn_no)
 
     outings = Outing.objects.filter(
-        user__year=response.user.profile.year, status='cgranted')
+        user__year=response.user.profile.year, status='ct_granted')
+    if g == 'ct_granted':
+        g = 'pending'
     filters = ['pending', 'granted', 'delayed',
                'completed', 'rejected', 'expired', 'on leave']
     context = {'leaves': leaves, 'outings': outings, 'username': response.user.username,
@@ -240,7 +249,7 @@ def approve(response, loro, id, remark=None):
             leave = Leaves.objects.get(id=id)
             if response.user.profile.hostel != leave.user.hostel or (leave.status != 'pending'):
                 return redirect('care_taker')
-            leave.status = 'cgranted'
+            leave.status = 'ct_granted'
             leave.save()
             threading.Thread(target=sendMail, args=(leave.user.user.email,
                                                     f'Your leave is approved by care taker, Out date:{leave.out_date}',
@@ -250,7 +259,7 @@ def approve(response, loro, id, remark=None):
             outing = Outing.objects.get(id=id)
             if response.user.profile.year != outing.user.year or response.user.profile.branch != outing.user.branch or outing.status != 'pending':
                 return redirect('care_taker')
-            outing.status = 'cgranted'
+            outing.status = 'ct_granted'
             outing.save()
             threading.Thread(target=sendMail, args=(outing.user.user.email,
                                                     f'Your outing is granted, Date:{outing.date}',
@@ -259,7 +268,7 @@ def approve(response, loro, id, remark=None):
         return redirect('care_taker')
     if loro == 'l':
         leave = Leaves.objects.get(id=id)
-        if response.user.profile.year != leave.user.year or response.user.profile.branch != leave.user.branch or (leave.status not in ['cgranted', 'rejected']):
+        if response.user.profile.year != leave.user.year or response.user.profile.branch != leave.user.branch or (leave.status not in ['ct_granted', 'rejected']):
             return redirect('admin_home')
         leave.status = 'granted'
         print(remark)
@@ -567,15 +576,12 @@ def outing(response):
         form = forms.OutingForm()
         if not response.user.profile.in_campus:
             return redirect('home')
-        try:
-            leave = Leaves.objects.filter(user=response.user.profile,
-                                          out_date=datetime.now().date()).last()
-            print(leave)
-            messages.warning(
-                response, f'cannot apply a outing when there is a leave pending => Leave({leave.out_date} to {leave.in_date})')
+        if Leaves.objects.get(user=response.user.profile, status__in=['pending', 'ct_granted', 'granted']):
+            messages.error(response, 'Cannot apply for a new outing when there is a leave pending or CT granted or granted')
             return redirect('home')
-        except:
-            pass
+        if Outings.objects.get(user=response.user.profile, status__in=['pending', 'ct_granted', 'granted']):
+            messages.error(response, 'Cannot apply for a new outing when there is an outing pending or CT granted or granted')
+            return redirect('home')
         return render(response, 'outing.html', {'form': form, 'counts': Counts.objects.get(user=response.user.profile)})
     else:
         form = forms.OutingForm(response.POST)

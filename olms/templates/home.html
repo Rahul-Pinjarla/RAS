@@ -70,7 +70,7 @@
 				<td>{{l.out_date|date:'M d,Y'}}</td>
 				<td>{{l.in_date|date:'M d,Y'}}</td>
 				<td>{% if l.proof %}<a href="{{ l.proof.url}}" target='_blank'>View</a>{% endif %}</td>
-				<td>{{l.status|capfirst}}</td>
+				<td>{% if l.status == 'ct_granted' %}CT granted {% else %}{{l.status|capfirst}}{% endif %}</td>
 				<td>{{l.remark}}</td>
 				<td style='width:10px'><a href={% url 'del' 'l' l.id %} class='glyphicon glyphicon-trash' style='color:red'></a></td>
       		</tr>

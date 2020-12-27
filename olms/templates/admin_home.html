@@ -29,9 +29,9 @@
             </ul>
 {%endblock%}
 {% block content %}
-	<div style='display:flex;justify-content:space-around;'>
-	<p style='font-size:20px;padding-right:45%'><b>{{g|capfirst}} Leaves:</b></p>
-	<form action="{% url 'admin_home' %}" method="get" id='myform' label='Filter'>
+	<div style='display:flex'>
+	<p style='font-size:20px;padding-left:10%'><b>{{g|capfirst}} Leaves:</b></p>
+	<form action="{% url 'admin_home' %}" method="get" id='myform' label='Filter' style='margin: 0 0 0 auto;padding-right:10%'>
     <select name="featured" id='yourid'>
 		{% for f in filters %}
 		{% if g == f or g == 'on_leave' and f == 'on leave'%}
@@ -58,7 +58,7 @@
         		<th>Proof</th>
 				<th>Phone No.</th>
 				<th>Parent Phn No.</th>
-				{% if g == 'cgranted' %}
+				{% if g == 'pending' %}
         		<th>Action</th>
         		<th>Action</th>
 				{% elif g == 'granted' or 'rejected' %}
@@ -98,7 +98,7 @@
 					{% else %}<p>&nbsp_</p>{% endif %}</td>
 				<td>{{pnb|index:forloop.counter0}}</td>
 				<td>{{ppnb|index:forloop.counter0}}</td>
-				{% if g == 'cgranted' %}
+				{% if g == 'pending' %}
         		<td id="Accept"><a href="{% url 'approve' 'l' l.pk %}">Accept</td>
         		<td id="Reject"><a href="{% url 'reject' 'l' l.pk %}">Reject</td>
 				{% elif g == 'granted' %}

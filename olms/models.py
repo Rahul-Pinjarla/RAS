@@ -46,10 +46,10 @@ class Leaves(models.Model):
     in_date = models.DateField(default=None,  blank=True, null=True)
     actual_out_date = models.DateTimeField(default=None, blank=True, null=True)
     actual_in_date = models.DateTimeField(default=None, blank=True, null=True)
-    statuses = [('pending', 'pending'), ('cgranted', 'cgranted'), ('granted',
-                                         'granted'), ('crejected', 'crejected'), ('rejected', 'rejected'), ('on_leave', 'On Leave'), ('delayed', 'Delayed'), ('completed', 'Completed'), ('expired', 'Expired')]
+    statuses = [('pending', 'pending'), ('ct_granted', 'CT granted'), ('granted',
+                                         'granted'), ('ct_rejected', 'CT rejected'), ('rejected', 'rejected'), ('on_leave', 'On Leave'), ('delayed', 'Delayed'), ('completed', 'Completed'), ('expired', 'Expired')]
     status = models.CharField(
-        max_length=9, choices=statuses, default='pending')
+        max_length=11, choices=statuses, default='pending')
     is_emergency = models.BooleanField(default=False)
     remark = models.CharField(max_length=100, default='No remark')
 
@@ -90,11 +90,11 @@ class Outing(models.Model):
     in_time = models.TimeField(default=None, blank=True, null=True)
     actual_in_time = models.TimeField(default=None, blank=True, null=True)
     actual_out_time = models.TimeField(default=None, blank=True, null=True)
-    statuses = [('pending', 'pending'),  ('cgranted', 'cgranted'), ('granted',
-                                         'granted'),('crejected', 'crejected'), ('rejected', 'rejected'), ('on_outing', 'On Outing'),
+    statuses = [('pending', 'pending'),  ('ct_granted', 'CT granted'), ('granted',
+                                         'granted'),('ct_rejected', 'CT rejected'), ('rejected', 'rejected'), ('on_outing', 'On Outing'),
                 ('completed', 'Completed'), ('expired', 'Expired')]
     status = models.CharField(
-        max_length=9, choices=statuses, default='pending')
+        max_length=11, choices=statuses, default='pending')
 
 
 class Counts(models.Model):
