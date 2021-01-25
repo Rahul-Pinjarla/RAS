@@ -79,7 +79,7 @@ def expireObjects():
 def main(response):
     if response.user.is_superuser or not isinstance(response.user, User):
         return redirect('logout')
-    return redirect('/home')
+    return redirect('home')
 
 
 def register(response):
@@ -98,6 +98,7 @@ def register(response):
             up.branch = cd['branch']
             up.year = cd['year']
             up.room_no = cd['room_no']
+            up.classs = cd['classs']
             up.save()
             response.session['uid'] = up.id
             return redirect('personal_info')
@@ -140,6 +141,9 @@ def userhome(response):
 def usertype(response):
     print('schedule')
     threading.Thread(target=expireObjects).start()
+    if not isinstance(response.user, User) or response.user.is_superuser:
+        print('*'*60)
+        return redirect('logout')
     if response.user.profile.usertype == 'admin':
         return 'admin'
     elif response.user.profile.usertype == 'security':
@@ -151,6 +155,7 @@ def usertype(response):
 
 def newLeave(response):
     if not isinstance(response.user, User):
+        print('isnotuser')
         return redirect('login')
     if not usertype(response) == 'student':
         return redirect('home')
@@ -167,13 +172,18 @@ def newLeave(response):
         messages.error(
             response, 'Maximum number of  leaves per month reached')
         return redirect('home')
-    if Leaves.objects.get(user=response.user.profile, status__in=['pending', 'ct_granted', 'granted']):
+    try:
+        Leaves.objects.get(user=response.user.profile, status__in=['pending', 'ct_granted', 'granted'])
         messages.error(response, 'Cannot apply for a new leave when there is a leave pending or CT granted or granted')
         return redirect('home')
-    if Outings.objects.get(user=response.user.profile, status__in=['pending', 'ct_granted', 'granted']):
+    except:
+        pass
+    try:
+        Outing.objects.get(user=response.user.profile, status__in=['pending', 'ct_granted', 'granted'])
         messages.error(response, 'Cannot apply for a new leave when there is an outing pending or CT granted or granted')
         return redirect('home')
-    
+    except:
+        pass
     form = forms.newLeave()
     if response.method == 'POST':
         form = forms.newLeave(response.POST,  response.FILES)
@@ -186,6 +196,50 @@ def newLeave(response):
             return render(response, 'newLeave.html', {'form': form, 'counts': Counts.objects.get(user=response.user.profile)})
         return redirect('home')
     return render(response, 'newLeave.html', {'form': form, 'counts': Counts.objects.get(user=response.user.profile)})
+    # return redirect('login/')
+
+
+def outing(response):
+    if not isinstance(response.user, User):
+        return redirect('login')
+    if not usertype(response) == 'student':
+        return redirect('home')
+    if not response.user.profile.in_campus:
+        return redirect('nic')
+    try:
+        Personal_info.objects.get(userprofile=response.user.profile)
+    except:
+        response.session['uid'] = response.user.profile.id
+        return redirect('personal_info')
+    if response.method == 'GET':
+        form = forms.OutingForm()
+        if not response.user.profile.in_campus:
+            return redirect('home')
+        try:
+            Leaves.objects.get(user=response.user.profile, status__in=['pending', 'ct_granted', 'granted'])
+            messages.error(response, 'Cannot apply for a new outing when there is a leave pending or CT granted or granted')
+            return redirect('home')
+        except:
+            pass
+        try:
+            Outing.objects.get(user=response.user.profile, status__in=['pending', 'ct_granted', 'granted'])
+            messages.error(response, 'Cannot apply for a new outing when there is an outing pending or CT granted or granted')
+            return redirect('home')
+        except:
+            pass
+        return render(response, 'outing.html', {'form': form, 'counts': Counts.objects.get(user=response.user.profile)})
+    else:
+        form = forms.OutingForm(response.POST)
+        if form.is_valid():
+            form = form.save(commit=False)
+            form.user = response.user.profile
+            form.status = 'pending'
+            form.date = datetime.now().date()
+            form.save()
+        else:
+            return render(response, 'outing.html', {'form': form, 'counts': Counts.objects.get(user=response.user.profile)})
+        return redirect('home')
+        
 
 
 def home(response):
@@ -257,7 +311,7 @@ def approve(response, loro, id, remark=None):
                             ).start()
         elif loro == 'o':
             outing = Outing.objects.get(id=id)
-            if response.user.profile.year != outing.user.year or response.user.profile.branch != outing.user.branch or outing.status != 'pending':
+            if response.user.profile.hostel != outing.user.hostel or outing.status != 'pending':
                 return redirect('care_taker')
             outing.status = 'ct_granted'
             outing.save()
@@ -284,7 +338,7 @@ def approve(response, loro, id, remark=None):
                          ).start()
     elif loro == 'o':
         outing = Outing.objects.get(id=id)
-        if response.user.profile.year != outing.user.year or response.user.profile.branch != outing.user.branch or outing.status != 'pending':
+        if response.user.profile.year != outing.user.year or response.user.profile.branch != outing.user.branch or outing.status != 'ct_granted':
             return redirect('admin_home')
         outing.status = 'granted'
         outing.save()
@@ -324,7 +378,7 @@ def reject(response, loro, id):
         return redirect('care_taker')
     if loro == 'l':
         leave = Leaves.objects.get(id=id)
-        if response.user.profile.year != leave.user.year or response.user.profile.branch != leave.user.branch or (leave.status not in ['pending', 'granted']):
+        if response.user.profile.year != leave.user.year or response.user.profile.branch != leave.user.branch or (leave.status not in ['ct_granted', 'granted']):
             return redirect('home')
         leave.status = 'rejected'
         leave.save()
@@ -334,7 +388,7 @@ def reject(response, loro, id):
                          ).start()
     elif loro == 'o':
         outing = Outing.objects.get(id=id)
-        if response.user.profile.year != outing.user.year or response.user.profile.branch != outing.user.branch or outing.status != 'pending':
+        if response.user.profile.year != outing.user.year or response.user.profile.branch != outing.user.branch or outing.status != 'ct_granted':
             return redirect('home')
         outing.status = 'rejected'
         outing.save()
@@ -498,7 +552,7 @@ def out(response, loro, id):
         user.in_campus = False
         user.save()
         messages.success(response, f'{user.id} can go for outing')
-    return redirect('/sec_home/manual')
+    return redirect('sec_home/manual')
 
 
 def inn(response, loro, id):
@@ -524,7 +578,7 @@ def inn(response, loro, id):
         user.in_campus = True
         user.save()
         messages.success(response, f'{user.id} is checked in')
-    return redirect('/sec_home/manual')
+    return redirect('sec_home/manual')
 
 
 def leave_view(response, lid):
@@ -557,43 +611,7 @@ def delete(response, loro, id):
         if response.user.profile != outing.user:
             return redirect('home')
         outing.delete()
-    return redirect('home')
-
-
-def outing(response):
-    if not isinstance(response.user, User):
-        return redirect('login')
-    if not usertype(response) == 'student':
-        return redirect('home')
-    if not response.user.profile.in_campus:
-        return redirect('nic')
-    try:
-        Personal_info.objects.get(userprofile=response.user.profile)
-    except:
-        response.session['uid'] = response.user.profile.id
-        return redirect('personal_info')
-    if response.method == 'GET':
-        form = forms.OutingForm()
-        if not response.user.profile.in_campus:
-            return redirect('home')
-        if Leaves.objects.get(user=response.user.profile, status__in=['pending', 'ct_granted', 'granted']):
-            messages.error(response, 'Cannot apply for a new outing when there is a leave pending or CT granted or granted')
-            return redirect('home')
-        if Outings.objects.get(user=response.user.profile, status__in=['pending', 'ct_granted', 'granted']):
-            messages.error(response, 'Cannot apply for a new outing when there is an outing pending or CT granted or granted')
-            return redirect('home')
-        return render(response, 'outing.html', {'form': form, 'counts': Counts.objects.get(user=response.user.profile)})
-    else:
-        form = forms.OutingForm(response.POST)
-        if form.is_valid():
-            form = form.save(commit=False)
-            form.user = response.user.profile
-            form.status = 'pending'
-            form.date = datetime.now().date()
-            form.save()
-        else:
-            return render(response, 'outing.html', {'form': form, 'counts': Counts.objects.get(user=response.user.profile)})
-        return redirect('home')
+    return redirect('home') 
 
 
 def public_holiday(response):
@@ -757,7 +775,7 @@ def care_taker(res):
         pnb.append(p.phone_no)
         ppnb.append(p.Parent_phn_no)
     outings = Outing.objects.filter(
-        user__year=res.user.profile.year, status='pending').order_by('-id')
+        user__hostel=res.user.profile.hostel, status='pending').order_by('-id')
     context = {'leaves': leaves, 'outings': outings, 'username': res.user.username,
                 'pnb': pnb, 'ppnb': ppnb}
     print(leaves)

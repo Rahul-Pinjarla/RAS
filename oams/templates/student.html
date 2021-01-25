@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block header %}
+          <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav navbar-right ml-lg-auto">
+
+              <li class="nav-item active">
+                <a class="nav-link btn  " href="/logout"
+                  ><span class="glyphicon glyphicon-log-out">&thinsp;</span> LogOut</span></a
+                >
+              </li>
+              <li class="nav-item active">
+                <a class="nav-link btn   adminid" href="#">
+                  <span style="font-size: 20px"> {{user}}</span></a
+                >
+              </li>
+            </ul>
+{%endblock%}
+{% block content %}
+
+{% if class.lecturer %}
+    <p>You have {{ class.lecturer.subject }} class at {{ class.lecture_time }}</p>
+    <a href='facecam'> click to submit attendence </a>
+{% else %}
+    <p>You have no classes today</p>
+{% endif %}
+    
+{% endblock content %}
+
+    

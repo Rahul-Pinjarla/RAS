@@ -17,12 +17,15 @@ from django.contrib import admin
 from django.urls import path, include
 from django.conf.urls import url
 from django.contrib.auth import views as auth_views
+from oams import views as oams_views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('olms.urls')),
-    url('login/',
+    path('olms/', include('olms.urls')),
+    url('login',
         auth_views.LoginView.as_view(redirect_authenticated_user=True),
         name='login'),
     path('', include('django.contrib.auth.urls')),
+    path('oams/', include('oams.urls')),
+    path('', oams_views.mainp, name='main')
 ]

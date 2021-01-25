@@ -7,7 +7,7 @@ from django.conf.urls.static import static
 import django
 
 urlpatterns = [
-    path('newleave', views.newLeave, name='newLeave'),
+    path('newleave', views.newLeave, name='newleave'),
     path('', views.main, name='main_page'),
     path('home', views.home, name='home'),
     path('register', views.register, name='register'),
@@ -18,7 +18,7 @@ urlpatterns = [
     path('admin_home', views.admin_home, name='admin_home'),
     path('approve/<str:loro>/<int:id>', views.approve, name='approve'),
     path('approve/<str:loro>/<int:id>/<str:remark>',
-         views.approve, name='approve'),
+        views.approve, name='approve'),
     path('reject/<str:loro>/<int:id>', views.reject, name='reject'),
     path('out/<str:loro>/<int:id>', views.out, name='out'),
     path('in/<str:loro>/<int:id>', views.inn, name='in'),

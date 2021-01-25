@@ -43,6 +43,8 @@ INSTALLED_APPS = [
     'bootstrap_datepicker_plus',
     'olms.templatetags.index',
     'widget_tweaks',
+    'oams',
+    'tempus_dominus'
 ]
 
 MIDDLEWARE = [
@@ -126,7 +128,7 @@ STATIC_URL = '/static/'
 
 STATIC_ROOT = os.path.join(BASE_DIR, 'Static')
 
-LOGIN_REDIRECT_URL = '/'
+LOGIN_REDIRECT_URL = 'main'
 
 LOGOUT_REDIRECT_URL = 'login'
 
@@ -140,7 +142,7 @@ BOOTSTRAP4 = {
 
 MEDIA_URL = '/media/'
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'olms/media')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 
 MAX_UPLOAD_SIZE = 10485760

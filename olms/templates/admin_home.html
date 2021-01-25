@@ -30,8 +30,8 @@
 {%endblock%}
 {% block content %}
 	<div style='display:flex'>
-	<p style='font-size:20px;padding-left:10%'><b>{{g|capfirst}} Leaves:</b></p>
-	<form action="{% url 'admin_home' %}" method="get" id='myform' label='Filter' style='margin: 0 0 0 auto;padding-right:10%'>
+	<p style='font-size:20px;padding-left:5%'><b>{{g|capfirst}} Leaves:</b></p>
+	<form action="{% url 'admin_home' %}" method="get" id='myform' label='Filter' style='margin: 0 0 0 auto;padding-right:5%'>
     <select name="featured" id='yourid'>
 		{% for f in filters %}
 		{% if g == f or g == 'on_leave' and f == 'on leave'%}
@@ -119,7 +119,7 @@
       {% endfor %}
 		</table>
 	</div>
-<p style='font-size:20px;padding :1% 0% 0% 10%;'><b>Outings:</b></p>
+<p style='font-size:20px;padding :1% 0% 0% 5%;'><b>Outings:</b></p>
 
 	<div class="center" style="padding-top: 20px;">
   			            

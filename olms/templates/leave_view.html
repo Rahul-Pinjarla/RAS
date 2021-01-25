@@ -56,9 +56,13 @@
     </div>
     {% endif %}
     <h4><b>Remark:</b></h4>
-    {% with 'granted rejected pending' as list %}
+    {% with 'granted rejected pending ct_granted' as list %}
     {% if leave.status in list.split %}
     <div class='addon' onclick='add(1)' id='1' data-value="Parent didn't approve ">Parent didn't approve  <i class="fa fa-plus" aria-hidden="true" id='add1'></i></i>
+    </div>
+    <div class='addon' onclick='add(2)' id='2' data-value="Proof is not readable ">Proof is not readable  <i class="fa fa-plus" aria-hidden="true" id='add1'></i></i>
+    </div>
+    <div class='addon' onclick='add(1)' id='1' data-value="Proof must be submitted ">Proof must be submitted <i class="fa fa-plus" aria-hidden="true" id='add1'></i></i>
     </div>
   
     <form><textarea style='resize:none;width:100%' id='input' placeholder='Type your remark here'></textarea><br></form>
@@ -67,7 +71,7 @@
     {% endif %}
     
     {% endwith %}
-    {% if leave.status == 'pending' %}
+    {% if leave.status == 'pending' or leave.status == 'ct_granted' %}
     <a href={% url 'approve' 'l' leave.pk %}
     <button class="btn btn-success" style="float: left" id='accept'>
         Accept  <i class="glyphicon glyphicon-ok"></i>

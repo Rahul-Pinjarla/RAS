@@ -26,6 +26,7 @@ class UserProfile(models.Model):
     hostel = models.CharField(max_length=2, choices=hostels, default='i2')
     room_no = models.CharField(
         max_length=7, blank=True, null=True, default=None)
+    classs = models.CharField(max_length=3, blank=True, null=True, default=None)
     in_campus = models.BooleanField(default=True)
 
 

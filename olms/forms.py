@@ -7,6 +7,7 @@ from django.template.defaultfilters import filesizeformat
 from bootstrap_datepicker_plus import DatePickerInput, TimePickerInput
 from datetime import datetime
 import re
+import string
 
 
 class newLeave(forms.ModelForm):
@@ -51,6 +52,8 @@ class student(UserCreationForm):
     hostel = forms.ChoiceField(choices=UserProfile.hostels, label='Hostel')
     room_no = forms.CharField(
         max_length=7, label='Room Number (Format ex: TF-21A)')
+    choices = [(i+ str(j+1),i+ str(j+1)) for i in list(string.ascii_uppercase) for j in range(10)]
+    classs = forms.ChoiceField(choices=choices, label='Class')
 
     class Meta:
         model = User

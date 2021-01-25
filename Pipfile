@@ -17,6 +17,7 @@ gunicorn = "*"
 dj-database-url = "*"
 psycopg2 = "*"
 waitress = "*"
+django-tempus-dominus = "*"
 
 [requires]
 python_version = "3.8"

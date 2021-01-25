@@ -1,0 +1,81 @@
+/* body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  height: 100vh;
+  background: #2f2f2f;
+  width: calc(100% - 33px);
+}
+
+canvas {
+  position: absolute;
+}
+.container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+.result-container {
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.result-container > div {
+  font-size: 1.3rem;
+  padding: 0.5rem;
+  margin: 5px 0;
+  color: white;
+  text-transform: capitalize;
+}
+#age {
+  background: #1e94be;
+}
+#emotion {
+  background: #8a1025;
+}
+#gender {
+  background: #62d8a5;
+}
+video {
+  width: 100%;
+}
+header {
+  background: #42a5f5;
+  color: white;
+  width: 100%;
+  font-size: 2rem;
+  padding: 1rem;
+  font-size: 2rem;
+} */
+
+
+.button-group, .play-area {
+  border: 1px solid grey;
+  padding: 1em 1%;
+  margin-bottom: 1em;
+}
+
+.button {
+  padding: 0.5em;
+  margin-right: 1em;
+}
+
+.play-area-sub {
+  width: 47%;
+  padding: 1em 1%;
+  display: inline-block;
+  text-align: center;
+}
+
+#capture {
+  display: none;
+}
+
+#snapshot {
+  display: inline-block;
+  width: 320px;
+  height: 240px;
+}

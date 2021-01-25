@@ -2,7 +2,7 @@
 {% load bootstrap4 %}
 {% load static %}
 {% load index %}
-{%block header%}
+{% block header %}
               
 
               <li class="nav-item active">
@@ -11,7 +11,7 @@
                 >
               </li>
              
- {%endblock%}
+ {% endblock %}
 {% block content %}
   <style>
   .container-login100 {
@@ -241,7 +241,7 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
-{% if request.path == '/sec_home/manual' %}
+{% if request.path == '/olms/sec_home/manual' %}
 input:focus {
     outline:none;
 }
@@ -361,7 +361,7 @@ input{
 {% endif %}
 {% endif %}  
     
-{% if leaves or outings or request.path == '/sec_home/manual' %} 
+{% if leaves or outings or request.path == '/olms/sec_home/manual' %} 
 <div class='details' ></div>
 
     {% if messages %}
@@ -389,7 +389,7 @@ input{
 <script>
         $(document).ready(function(){
         $('.handle').click()
-        {% if request.path == '/sec_home/' %}
+        {% if request.path == '/olms/sec_home/' %}
         $('.toggles').on('click', function(){
                 	location.replace('{% url "sec_home" "manual" %}');
         })

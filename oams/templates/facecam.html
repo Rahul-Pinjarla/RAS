@@ -1,0 +1,51 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Face recognition App</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header>Face recognition in the browser using Javascript</header>
+    <div class="container">
+      <video id="video" height="500" width="500" autoplay muted></video>
+    </div>
+    <div class="result-container">
+      <div id="emotion">Emotion</div>
+      <div id="gender">Gender</div>
+      <div id="age">Age</div>
+    </div>
+
+    <script src="./js/face-api.min.js"></script>
+    <script src="./js/main.js"></script>
+  </body>
+</html> -->
+
+<!-- The buttons to control the stream -->
+{% load static %}
+<div class="button-group">
+  <button id="btn-start" type="button" class="button">Start Streaming</button>
+  <button id="btn-stop" type="button" class="button">Stop Streaming</button>
+  <button id="btn-capture" type="button" class="button">Capture Image</button>
+</div>
+
+<!-- Video Element & Canvas -->
+<div class="play-area">
+  <div class="play-area-sub">
+    <h3>The Stream</h3>
+    <video id="stream" width="320" height="240"></video>
+  </div>
+  <div class="play-area-sub">
+    <h3>The Capture</h3>
+    <canvas id="capture" width="320" height="240"></canvas>
+    <div id="snapshot"></div>
+  </div>
+</div>
+<form id='myForm' action='facecam' method='post' enctype="multipart/form-data">
+  {{form.media}}
+{% csrf_token %}
+</form>
+
+<script src="{%static 'real.js' %}"></script>

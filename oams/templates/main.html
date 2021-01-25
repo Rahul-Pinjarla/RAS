@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>SMS</title>
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous"> 
+    <style>
+        .right{
+            background-color: lightgoldenrodyellow;
+        }
+        .right a{
+            color:rgb(82, 191, 235);
+            }
+        .left, .right{
+            height:50vh;
+            width:100%;
+            align-items: center;
+            justify-content: center;
+            font-weight: BOLD;
+            display: flex;
+            font-size: 5vh;
+        }
+        .left{
+            background-color: lightskyblue;
+        }
+        .left a{
+            color:lightgoldenrodyellow;
+            }
+        a{
+            text-decoration: none;
+        }
+        @media screen and (min-width: 768px){
+            .left, .right{
+                height: 100vh;
+            }
+        }
+    </style>
+    </head>
+    <body>
+        <div class="row no-gutters">
+            <div class="col-md-6 no-gutters" onClick='location.href = "/olms/home"'>
+                <div class="left"><a href="olms/home">Online Leave Management System</a></div></div>
+            <div class="col-md-6 no-gutters"  onClick='location.href = "/oams"'>
+                <div class="right"><a href="oams">Online Attendence Management System</a></div>
+            </div>
+        </div>
+    </body>
+</html>
