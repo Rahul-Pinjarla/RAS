@@ -17,7 +17,4 @@ urlpatterns = [
     path('lecturer', views.lecturer, name='lecturer'),
     path('facecam', views.facecam, name='facecam'),
 
-] + static(settings.STATIC_URL, doucument_root=settings.STATIC_ROOT)
-
-urlpatterns += static(settings.MEDIA_URL,
-                      document_root=settings.MEDIA_ROOT)
+]

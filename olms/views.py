@@ -112,7 +112,7 @@ def pinfo(response):
     except:
         return redirect('register')
     if response.method == 'POST':
-        form = forms.pform(response.POST)
+        form = forms.pform(response.POST, response.FILES)
 
         if form.is_valid():
             up = UserProfile.objects.get(

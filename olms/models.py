@@ -64,7 +64,7 @@ def rename_and_upload(instance, filename):
 class Personal_info(models.Model):
     full_name = models.CharField(
         max_length=50)
-    photo = models.ImageField(default=None, blank=True, null=True, upload_to=rename_and_upload, validators=[
+    photo = models.ImageField(default=None, blank=True, null=True, upload_to='photos/', validators=[
                               FileExtensionValidator(allowed_extensions=['jpg', 'png', 'jpeg', 'img'])])
     aadhar_regex = RegexValidator(
         regex=r'^\d{12}$', message='Aadhar number should only contain numbers and should have exactly 12 digits')

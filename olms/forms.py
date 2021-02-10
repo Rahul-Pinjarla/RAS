@@ -45,6 +45,8 @@ class newLeave(forms.ModelForm):
 class student(UserCreationForm):
     uid = forms.CharField(max_length=7, label='Id', widget=forms.TextInput(
         attrs={}))
+    gender = forms.ChoiceField(choices=[(
+        'male', 'Male'), ('female', 'Female'), ('other', 'Other')], widget=forms.Select(attrs={'class':'form-control'}))
     branch = forms.ChoiceField(
         choices=UserProfile.branches, label='Branch')
     year = forms.ChoiceField(choices=UserProfile.years, label='Year',
