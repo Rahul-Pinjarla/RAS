@@ -278,6 +278,11 @@
         display: none;
         font-family: "Exo 2";
       }
+      .stick{
+        position: -webkit-sticky; !important
+        position: sticky; !important
+        top:0; !important
+      }
   .addon{
     border: 1px solid #333333!important;
     display:inline-block;
@@ -303,6 +308,7 @@
 .remove Button{
     background-color: #ff6600;
 }
+
 
 .container-login100 {
   width: 100%;
@@ -359,7 +365,14 @@
     .navbar{margin-bottom: 0px !important;}
 
     .navfont{font-family: 'Merriweather Sans', sans-serif;}
-      
+
+    footer{
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      z-index:2;
+    }
     </style>
     {% block extrahead %}{% endblock %}
     <title>OLMS</title>
@@ -370,7 +383,7 @@
       <h1>STUDENT LEAVE MANAGEMENT SYSYTEM</h1>
     </div>
     <header>
-      <div class="container-fluid">
+      <div class="container-fluid stick">
         <nav class="navbar navbar-expand-sm navbar-dark bg-dark grad">
 		  <img src="{%static 'images/logo2.png'%}" width='50px' style='padding-left:10px;' class='img'>
           <a class="navbar-brand brand-small" href="/home">RGUKT Srikakulam</a>
@@ -409,10 +422,19 @@
     {% block content %}
 			  
     {% endblock %}
+    <div style='margin-bottom:3%;color:white'>Easter egg</div>
     </div>
     <!--    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>-->
     <script src="{% static 'js/bootstrap.min.js'%}"></script>
     <script src="{% static 'js/jquery-2.1.1.min.js' %}"></script>
     <!--    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>-->
   </body>
+  <footer class="bg-light text-center text-lg-start" style='margin-top: 1%'>
+  <!-- Copyright -->
+  <div class="text-center p-3 ff" style="background-color: #0F2027;">
+    <span style='color:white;'>© Copyright:</span>
+    <a class="text-light" href="https://rguktsklm.ac.in">RGUKT Srikakulam</a>
+  </div>
+  <!-- Copyright -->
+</footer>
 </html>
