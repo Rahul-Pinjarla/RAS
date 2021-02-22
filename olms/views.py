@@ -759,7 +759,8 @@ def profile(res):
     if usertype(res) != 'student':
         return redirect("home")
     pi = Personal_info.objects.get(userprofile=res.user.profile)
-    return render(res, 'profilepage.html', {'pi': pi, 'user': res.user.profile})
+    count = Counts.objects.get(user=res.user.profile)
+    return render(res, 'profilepage.html', {'pi': pi, 'user': res.user.profile, 'count': count})
 
 
 def care_taker(res):
